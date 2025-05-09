@@ -9,7 +9,7 @@ import { ResetPassword } from './components/ResetPassword';
 export type AuthType =
   | 'login'
   | 'register'
-  | 'register-admin'
+  | 'setup-account'
   | 'forgot-password'
   | 'reset-password'
   | 'forgot-password-success'
@@ -26,7 +26,7 @@ export const FORMS = {
   login: () => null,
   oops: Oops,
   register: Register,
-  'register-admin': Register,
+  'setup-account': Register,
   'reset-password': ResetPassword,
   providers: () => null,
 } satisfies FormDictionary;

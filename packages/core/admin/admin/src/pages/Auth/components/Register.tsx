@@ -313,12 +313,12 @@ const Register = ({ hasAdmin }: RegisterProps) => {
 
   if (
     !match ||
-    (match.params.authType !== 'register' && match.params.authType !== 'register-admin')
+    (match.params.authType !== 'register' && match.params.authType !== 'setup-account')
   ) {
     return <Navigate to="/" />;
   }
 
-  const isAdminRegistration = match.params.authType === 'register-admin';
+  const isAdminRegistration = match.params.authType === 'register';
 
   const schema = isAdminRegistration ? REGISTER_ADMIN_SCHEMA : REGISTER_USER_SCHEMA;
 
@@ -507,7 +507,7 @@ const Register = ({ hasAdmin }: RegisterProps) => {
             </Button>
           </Flex>
         </Form>
-        {match?.params.authType === 'register' && (
+        {match?.params.authType === 'setup-account' && (
           <Box paddingTop={4}>
             <Flex justifyContent="center">
               <Link tag={NavLink} to="/auth/login">

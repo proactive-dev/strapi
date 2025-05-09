@@ -50,23 +50,23 @@ const AuthPage = () => {
   }
 
   // User is already logged in
-  if (authType !== 'register-admin' && authType !== 'register' && token) {
+  if (authType !== 'setup-account' && authType !== 'register' && token) {
     return <Navigate to="/" />;
   }
 
   // there is already an admin user oo
-  if (hasAdmin && authType === 'register-admin' && token) {
+  if (hasAdmin && authType === 'register' && token) {
     return <Navigate to="/" />;
   }
 
-  // Redirect the user to the register-admin if it is the first user
-  if (!hasAdmin && authType !== 'register-admin') {
+  // Redirect the user to the register if it is the first user
+  if (!hasAdmin && authType !== 'register') {
     return (
       <Navigate
         to={{
-          pathname: '/auth/register-admin',
+          pathname: '/auth/register',
           // Forward the `?redirectTo` from /auth/login
-          // /abc => /auth/login?redirectTo=%2Fabc => /auth/register-admin?redirectTo=%2Fabc
+          // /abc => /auth/login?redirectTo=%2Fabc => /auth/register?redirectTo=%2Fabc
           search,
         }}
       />

@@ -30,9 +30,9 @@ describe('Register', () => {
     expect(getByRole('button', { name: /let's start/i })).toBeInTheDocument();
   });
 
-  it('should disable the email field on the register field', () => {
+  it('should disable the email field on the setup-account field', () => {
     const { getByLabelText } = render(<Register />, {
-      initialEntries: ['/auth/register'],
+      initialEntries: ['/auth/setup-account'],
     });
 
     FIELD_LABELS.forEach((label) => {
@@ -44,9 +44,9 @@ describe('Register', () => {
     });
   });
 
-  it('should enable all fields on the register-admin route', () => {
+  it('should enable all fields on the register route', () => {
     const { getByLabelText } = render(<Register />, {
-      initialEntries: ['/auth/register-admin'],
+      initialEntries: ['/auth/register'],
     });
 
     FIELD_LABELS.forEach((label) => {
