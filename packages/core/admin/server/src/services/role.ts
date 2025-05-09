@@ -14,7 +14,7 @@ import { validatePermissionsExist } from '../validation/permission';
 import roleConstants from './constants';
 import { getService } from '../utils';
 
-const { SUPER_ADMIN_CODE, CONTENT_TYPE_SECTION } = roleConstants;
+const { SUPER_ADMIN_CODE, SYS_USER_CODE, CONTENT_TYPE_SECTION } = roleConstants;
 
 const { createAsyncSeriesWaterfallHook } = hooksUtils;
 const { ApplicationError } = errors;
@@ -224,6 +224,10 @@ const getUsersCount = async (roleId: Data.ID): Promise<number> => {
  */
 const getSuperAdmin = (): Promise<AdminRole | undefined> => findOne({ code: SUPER_ADMIN_CODE });
 
+/** Returns sys-user role
+ */
+const getSysUser = (): Promise<AdminRole | undefined> => findOne({ code: SYS_USER_CODE });
+
 /** Returns admin role with userCount
  * @returns {Promise<role>}
  */
@@ -250,6 +254,12 @@ const createRolesIfNoneExist = async () => {
   });
 
   await getService('user').assignARoleToAll(superAdminRole.id);
+
+  const sysUserRole = await create({
+    name: 'System User',
+    code: 'strapi-sys-user',
+    description: 'System users can manage and publish contents',
+  });
 
   const editorRole = await create({
     name: 'Editor',
@@ -281,6 +291,7 @@ const createRolesIfNoneExist = async () => {
   authorPermissions.push(...getDefaultPluginPermissions({ isAuthor: true }));
 
   // assign permissions to roles
+  await addPermissions(sysUserRole.id, editorPermissions);
   await addPermissions(editorRole.id, editorPermissions);
   await addPermissions(authorRole.id, authorPermissions);
 };
@@ -467,6 +478,7 @@ export default {
   deleteByIds,
   getUsersCount,
   getSuperAdmin,
+  getSysUser,
   getSuperAdminWithUsersCount,
   createRolesIfNoneExist,
   displayWarningIfNoSuperAdmin,

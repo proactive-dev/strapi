@@ -123,23 +123,30 @@ export default {
 
     const hasAdmin = await getService('user').exists();
 
+    let userRole;
     if (hasAdmin) {
-      throw new ApplicationError('You cannot register a new super admin');
-    }
+      userRole = await getService('role').getSysUser();
 
-    const superAdminRole = await getService('role').getSuperAdmin();
+      if (!userRole) {
+        throw new ApplicationError(
+          "Cannot register the system user because the system user role doesn't exist."
+        );
+      }
+    } else {
+      userRole = await getService('role').getSuperAdmin();
 
-    if (!superAdminRole) {
-      throw new ApplicationError(
-        "Cannot register the first admin because the super admin role doesn't exist."
-      );
+      if (!userRole) {
+        throw new ApplicationError(
+          "Cannot register the first admin because the super admin role doesn't exist."
+        );
+      }
     }
 
     const user = await getService('user').create({
       ...input,
       registrationToken: null,
       isActive: true,
-      roles: superAdminRole ? [superAdminRole.id] : [],
+      roles: userRole ? [userRole.id] : [],
     });
 
     strapi.telemetry.send('didCreateFirstAdmin');
