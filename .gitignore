@@ -161,5 +161,4 @@ examples/**/types/generated
 
 # Ignore yarn.lock inside templates
 templates/yarn.lock
-/.yarn/
 /yarn.lock
