@@ -6,7 +6,7 @@ import { format } from 'winston';
  */
 export default format.printf(({ message, level, timestamp }) => {
   if (typeof message !== 'string') {
-    return message;
+    return 'message';
   }
 
   const newMessage = `[${timestamp as string}] ${level}: ${message as string}`;

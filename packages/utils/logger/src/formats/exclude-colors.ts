@@ -6,7 +6,7 @@ import { format } from 'winston';
  */
 export default format.printf(({ message }) => {
   if (typeof message !== 'string') {
-    return message;
+    return 'message';
   }
 
   return message.replace(
