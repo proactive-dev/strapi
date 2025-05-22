@@ -22,7 +22,6 @@ const updateConditionsToFalse = (obj: object): object => {
       );
 
       if (!isActionEnabled) {
-        // @ts-expect-error – TODO: type better
         const updatedConditions = Object.keys(currentValue.conditions).reduce((acc1, current) => {
           // @ts-expect-error – TODO: type better
           acc1[current] = false;

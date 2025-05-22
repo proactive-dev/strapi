@@ -127,7 +127,8 @@ interface BlockerProps {
   title: MessageDescriptor;
 }
 
-const Blocker = ({ displayedIcon, description, title, isOpen }: BlockerProps) => {
+// @ts-ignore
+const Blocker: React.FC<BlockerProps> = ({ displayedIcon, description, title, isOpen }: BlockerProps) => {
   const { formatMessage } = useIntl();
 
   // eslint-disable-next-line no-undef
