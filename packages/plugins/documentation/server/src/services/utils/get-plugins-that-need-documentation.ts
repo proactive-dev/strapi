@@ -2,7 +2,7 @@ import type { PluginConfig } from '../../types';
 
 const getPluginsThatNeedDocumentation = (config: PluginConfig) => {
   // Default plugins that need documentation generated
-  const defaultPlugins = ['upload', 'users-permissions'];
+  const defaultPlugins = ['upload'];
 
   // User specified plugins that need documentation generated
   const userPluginsConfig = config['x-strapi-config'].plugins;
