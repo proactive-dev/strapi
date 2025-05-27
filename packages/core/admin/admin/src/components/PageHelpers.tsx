@@ -254,8 +254,10 @@ export interface TitleProps {
  * it as the title of the html.
  */
 const Title = ({ children: title }: TitleProps) => {
+  const { formatMessage } = useIntl();
+
   React.useEffect(() => {
-    document.title = `${title} | Strapi`;
+    document.title = `${formatMessage({id: 'title', defaultMessage: ''})} | ${title}`;
   }, [title]);
 
   return null;
