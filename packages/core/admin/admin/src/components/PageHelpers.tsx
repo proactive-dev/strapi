@@ -257,7 +257,7 @@ const Title = ({ children: title }: TitleProps) => {
   const { formatMessage } = useIntl();
 
   React.useEffect(() => {
-    document.title = `${formatMessage({id: 'title', defaultMessage: ''})} | ${title}`;
+    document.title = `${formatMessage({ id: 'title', defaultMessage: '' })} | ${title}`;
   }, [title]);
 
   return null;
