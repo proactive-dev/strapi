@@ -46,4 +46,8 @@ const digestMessage = async (message: string) => {
   return bufferToHex(hashBuffer);
 };
 
-export { getDisplayName, hashAdminUserEmail };
+const hasSuperAdminRole = (user: User) => {
+  return user.roles.filter((role) => role.code === 'strapi-super-admin').length > 0;
+};
+
+export { getDisplayName, hashAdminUserEmail, hasSuperAdminRole };

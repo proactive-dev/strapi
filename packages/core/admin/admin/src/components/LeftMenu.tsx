@@ -9,7 +9,7 @@ import { styled } from 'styled-components';
 import { useAuth } from '../features/Auth';
 import { useTracking } from '../features/Tracking';
 import { Menu, MenuItem } from '../hooks/useMenu';
-import { getDisplayName } from '../utils/users';
+import { getDisplayName, hasSuperAdminRole } from '../utils/users';
 
 import { MainNav } from './MainNav/MainNav';
 import { NavBrand } from './MainNav/NavBrand';
@@ -66,7 +66,13 @@ const LeftMenu = ({ generalSectionLinks, pluginsSectionLinks }: LeftMenuProps) =
     trackUsage('willNavigate', { from: pathname, to: destination });
   };
 
-  const listLinksAlphabeticallySorted = [...pluginsSectionLinks, ...generalSectionLinks].sort(
+  // show settings menu for super admin only
+  let filteredGeneralSectionLinks = generalSectionLinks;
+  if (!user || !hasSuperAdminRole(user)) {
+    filteredGeneralSectionLinks = generalSectionLinks.filter(link => link.to !== "/settings");
+  }
+
+  const listLinksAlphabeticallySorted = [...pluginsSectionLinks, ...filteredGeneralSectionLinks].sort(
     (a, b) => formatter.compare(formatMessage(a.intlLabel), formatMessage(b.intlLabel))
   );
   const listLinks = sortLinks(listLinksAlphabeticallySorted);
