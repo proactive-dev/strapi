@@ -4,6 +4,7 @@ import { PermissionMap } from './types/permissions';
 import { getCookieValue, setCookie, deleteCookie } from './utils/cookies';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { User } from "./features/Auth";
 
 type ThemeName = 'light' | 'dark' | 'system';
 
@@ -23,6 +24,7 @@ interface AppState {
 const STORAGE_KEYS = {
   TOKEN: 'jwtToken',
   STATUS: 'isLoggedIn',
+  USER: 'userInfo',
 };
 
 const THEME_LOCAL_STORAGE_KEY = 'STRAPI_THEME';
@@ -71,13 +73,16 @@ const adminSlice = createSlice({
     setToken(state, action: PayloadAction<string | null>) {
       state.token = action.payload;
     },
-    login(state, action: PayloadAction<{ token: string; persist?: boolean }>) {
-      const { token, persist } = action.payload;
+    login(state, action: PayloadAction<{ token: string; user?: User; persist?: boolean }>) {
+      const { token, user, persist } = action.payload;
 
       if (!persist) {
         setCookie(STORAGE_KEYS.TOKEN, token);
-      } else {
-        window.localStorage.setItem(STORAGE_KEYS.TOKEN, JSON.stringify(token));
+        setCookie(STORAGE_KEYS.USER, JSON.stringify(user));
+      }
+      window.localStorage.setItem(STORAGE_KEYS.TOKEN, JSON.stringify(token));
+      if (!!user) {
+        window.localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
       }
       window.localStorage.setItem(STORAGE_KEYS.STATUS, 'true');
       state.token = token;
@@ -86,6 +91,7 @@ const adminSlice = createSlice({
       state.token = null;
       deleteCookie(STORAGE_KEYS.TOKEN);
       window.localStorage.removeItem(STORAGE_KEYS.TOKEN);
+      window.localStorage.removeItem(STORAGE_KEYS.USER);
       window.localStorage.removeItem(STORAGE_KEYS.STATUS);
     },
   },

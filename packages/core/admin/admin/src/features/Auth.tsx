@@ -170,11 +170,12 @@ const AuthProvider = ({
        * because if something fails, it will throw an error.
        */
       if ('data' in res) {
-        const { token } = res.data;
+        const { token, user } = res.data;
 
         dispatch(
           loginAction({
             token,
+            user,
             persist: rememberMe,
           })
         );

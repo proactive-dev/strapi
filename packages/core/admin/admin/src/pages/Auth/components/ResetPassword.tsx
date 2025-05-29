@@ -94,7 +94,7 @@ const ResetPassword = () => {
     const res = await resetPassword(body);
 
     if ('data' in res) {
-      dispatch(login({ token: res.data.token }));
+      dispatch(login({ token: res.data.token, user: res.data.user }));
       navigate('/');
     }
   };

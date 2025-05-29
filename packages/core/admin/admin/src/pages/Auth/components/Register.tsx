@@ -238,7 +238,7 @@ const Register = ({ hasAdmin }: RegisterProps) => {
     const res = await registerAdmin(body);
 
     if ('data' in res) {
-      dispatch(login({ token: res.data.token }));
+      dispatch(login({ token: res.data.token, user: res.data.user }));
 
       const { roles } = res.data.user;
 
@@ -284,7 +284,7 @@ const Register = ({ hasAdmin }: RegisterProps) => {
     const res = await registerUser(body);
 
     if ('data' in res) {
-      dispatch(login({ token: res.data.token }));
+      dispatch(login({ token: res.data.token, user: res.data.user }));
 
       if (news) {
         // Only enable EE survey if user accepted the newsletter
