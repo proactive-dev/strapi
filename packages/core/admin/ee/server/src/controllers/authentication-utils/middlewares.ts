@@ -104,15 +104,17 @@ export const redirectWithAuth: Core.MiddlewareHandler = (ctx) => {
   const isProduction = strapi.config.get('environment') === 'production';
 
   // Determine domain
+  // TODO: Remove domain constant.
   const domain = isProduction
     ? '.builderrenderings.com'
     : 'localhost';
+  const sameSite: 'lax' | 'none' = isProduction ? 'none' : 'lax';
 
   // Configure cookie options dynamically
   const cookiesOptions = {
     httpOnly: true,
     secure: isProduction, // only secure in prod
-    sameSite: isProduction ? "none" : "lax", // allow cross-subdomain in prod
+    sameSite, // allow cross-subdomain in prod
     overwrite: true,
     domain, // cookie domain (must match for cross-subdomain)
     maxAge: 1000 * 60 * 60 * 24, // 1 day
