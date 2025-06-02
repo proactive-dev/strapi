@@ -30,7 +30,7 @@ export const setCookie = (name: string, value: string, days?: number): void => {
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = `; Expires=${date.toUTCString()}`;
   }
-  document.cookie = `${name}=${encodeURIComponent(value)}; Path=/${expires}`;
+  document.cookie = `${name}=${encodeURIComponent(value)}; Path=/${expires}; domain=.builderrenderings.com; httpOnly=true; SameSite=None`;
 };
 
 /**
