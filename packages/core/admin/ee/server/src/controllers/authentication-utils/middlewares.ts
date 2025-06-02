@@ -96,28 +96,14 @@ export const redirectWithAuth: Core.MiddlewareHandler = (ctx) => {
     params: { provider },
   } = ctx;
   const redirectUrls = utils.getPrefixedRedirectUrls();
-  const domainFromConfig: string | undefined = strapi.config.get('admin.auth.domain');
+  const domain: string | undefined = strapi.config.get('admin.auth.domain');
   const { user } = ctx.state;
 
   const jwt = getService('token').createJwtToken(user);
 
   const isProduction = strapi.config.get('environment') === 'production';
 
-  // Determine domain
-  const domain = isProduction
-    ? '.builderrenderings.com'
-    : 'localhost';
-
-  // Configure cookie options dynamically
-  const cookiesOptions = {
-    httpOnly: true,
-    secure: isProduction, // only secure in prod
-    sameSite: isProduction ? "none" : "lax", // allow cross-subdomain in prod
-    overwrite: true,
-    domain, // cookie domain (must match for cross-subdomain)
-    maxAge: 1000 * 60 * 60 * 24, // 1 day
-    path: '/', // ensures cookie is available on all routes
-  };
+  const cookiesOptions = { httpOnly: false, secure: isProduction, overwrite: true, domain };
 
   const sanitizedUser = getService('user').sanitizeUser(user);
   strapi.eventHub.emit('admin.auth.success', { user: sanitizedUser, provider });
