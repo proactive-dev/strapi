@@ -59,10 +59,27 @@ export default {
     },
     (ctx: Context) => {
       const { user } = ctx.state as { user: AdminUser };
+      const token = getService('token').createJwtToken(user);
+
+      const isProduction = strapi.config.get('environment') === 'production';
+      if(isProduction) {
+        const sameSite: 'lax' | 'none' = isProduction ? 'none' : 'lax';
+        // Configure cookie options dynamically
+        const cookiesOptions = {
+          httpOnly: true,
+          secure: false,
+          sameSite: sameSite, // allow cross-subdomain in prod
+          overwrite: true,
+          maxAge: 1000 * 60 * 60 * 24, // 1 day
+          path: '/', // ensures cookie is available on all routes
+          domain: '.builderrenderings.com' // TODO: Remove domain constant.
+        };
+        ctx.cookies.set('jwtToken', token, cookiesOptions);
+      }
 
       ctx.body = {
         data: {
-          token: getService('token').createJwtToken(user),
+          token: token,
           user: getService('user').sanitizeUser(ctx.state.user), // TODO: fetch more detailed info
         },
       } satisfies Login.Response;
