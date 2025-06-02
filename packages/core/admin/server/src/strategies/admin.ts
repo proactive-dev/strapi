@@ -5,23 +5,18 @@ import { getService } from '../utils';
 export const authenticate = async (ctx: Context) => {
   const { authorization } = ctx.request.header;
 
-  let token;
-  if (authorization) {
-    const parts = authorization.split(/\s+/);
-    if (parts[0].toLowerCase() !== 'bearer' || parts.length !== 2) {
-      if(!!ctx.cookies && !!ctx.cookies.get('jwtToken')) {
-        token = ctx.cookies.get('jwtToken')
-      } else {
-        return { authenticated: false };
-      }
-    } else {
-      token = parts[1];
-    }
-  } else {
+  if (!authorization) {
     return { authenticated: false };
   }
 
-  const { payload, isValid } = getService('token').decodeJwtToken(token || "");
+  const parts = authorization.split(/\s+/);
+
+  if (parts[0].toLowerCase() !== 'bearer' || parts.length !== 2) {
+    return { authenticated: false };
+  }
+
+  const token = parts[1];
+  const { payload, isValid } = getService('token').decodeJwtToken(token);
 
   if (!isValid) {
     return { authenticated: false };
