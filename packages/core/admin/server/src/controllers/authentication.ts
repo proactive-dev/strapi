@@ -67,7 +67,7 @@ export default {
         // Configure cookie options dynamically
         const cookiesOptions = {
           httpOnly: true,
-          secure: false,
+          secure: true,
           sameSite: sameSite, // allow cross-subdomain in prod
           overwrite: true,
           maxAge: 1000 * 60 * 60 * 24, // 1 day
