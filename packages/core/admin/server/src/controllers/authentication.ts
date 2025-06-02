@@ -74,7 +74,7 @@ export default {
           path: '/', // ensures cookie is available on all routes
           domain: '.builderrenderings.com' // TODO: Remove domain constant.
         };
-        ctx.cookies.set('jwtToken', token, cookiesOptions);
+        ctx.cookies.set('jwt', token, cookiesOptions);
       }
 
       ctx.body = {
