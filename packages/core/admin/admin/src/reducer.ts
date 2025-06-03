@@ -76,14 +76,15 @@ const adminSlice = createSlice({
     login(state, action: PayloadAction<{ token: string; user?: User; persist?: boolean }>) {
       const { token, user, persist } = action.payload;
 
-      setCookie(STORAGE_KEYS.TOKEN, token);
-      if (!!user) {
-        setCookie(STORAGE_KEYS.USER, JSON.stringify(user));
-      }
+      window.localStorage.setItem(STORAGE_KEYS.TOKEN, JSON.stringify(token));
       if (persist) {
-        window.localStorage.setItem(STORAGE_KEYS.TOKEN, JSON.stringify(token));
         if (!!user) {
           window.localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+        }
+      } else {
+        setCookie(STORAGE_KEYS.TOKEN, token);
+        if (!!user) {
+          setCookie(STORAGE_KEYS.USER, JSON.stringify(user));
         }
       }
       window.localStorage.setItem(STORAGE_KEYS.STATUS, 'true');
