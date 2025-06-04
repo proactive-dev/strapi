@@ -14,11 +14,22 @@ const CellValue = ({ type, value }: CellValueProps) => {
   let formattedValue = value;
 
   if (type === 'date') {
-    formattedValue = formatDate(parseISO(value), { dateStyle: 'full' });
+    formattedValue = formatDate(parseISO(value), {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    });
   }
 
   if (type === 'datetime') {
-    formattedValue = formatDate(value, { dateStyle: 'full', timeStyle: 'short' });
+    formattedValue = formatDate(value, {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
   }
 
   if (type === 'time') {
@@ -29,7 +40,9 @@ const CellValue = ({ type, value }: CellValueProps) => {
     date.setSeconds(second);
 
     formattedValue = formatTime(date, {
-      timeStyle: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
     });
   }
 
