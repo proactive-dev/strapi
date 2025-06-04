@@ -131,6 +131,7 @@ const HomePageCE = () => {
   const displayName = user?.firstname ?? user?.username ?? user?.email;
 
   const getAllWidgets = useStrapiApp('UnstableHomepageCe', (state) => state.widgets.getAll);
+  const isSysAdmin = user?.roles.some((role: any) => (role.code === 'strapi-super-admin') || (role.code === 'strapi-sys-user')) || false;
 
   return (
     <Main>
@@ -150,22 +151,25 @@ const HomePageCE = () => {
       <Layouts.Content>
         <Flex direction="column" alignItems="stretch" gap={8} paddingBottom={10}>
           <GuidedTour />
-          <Grid.Root gap={5}>
-            {getAllWidgets().map((widget) => {
-              return (
-                <Grid.Item col={6} s={12} key={widget.uid}>
-                  <WidgetRoot
-                    title={widget.title}
-                    icon={widget.icon}
-                    permissions={widget.permissions}
-                    link={widget.link}
-                  >
-                    <WidgetComponent component={widget.component} />
-                  </WidgetRoot>
-                </Grid.Item>
-              );
-            })}
-          </Grid.Root>
+          {
+            isSysAdmin &&
+            <Grid.Root gap={5}>
+              {getAllWidgets().map((widget) => {
+                return (
+                  <Grid.Item col={6} s={12} key={widget.uid}>
+                    <WidgetRoot
+                      title={widget.title}
+                      icon={widget.icon}
+                      permissions={widget.permissions}
+                      link={widget.link}
+                    >
+                      <WidgetComponent component={widget.component} />
+                    </WidgetRoot>
+                  </Grid.Item>
+                );
+              })}
+            </Grid.Root>
+          }
         </Flex>
       </Layouts.Content>
     </Main>
